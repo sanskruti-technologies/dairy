@@ -303,6 +303,7 @@ class FrappeClient {
 				default:
 						$query = array();
 						$url = $this->_api_url.$params['doctype'].'/'.rawurlencode($params['data']);
+						//echo $url;
 						$ch = curl_init($url);
 						curl_setopt($ch,CURLOPT_CUSTOMREQUEST, 'GET');
 					break;

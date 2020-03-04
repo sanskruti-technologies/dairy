@@ -14,9 +14,15 @@ class Cart extends CI_Model {
 	public function clear_cart($cart_id){
 		$this->db->delete('cart_detail', array('cart_id' => $cart_id));
 	}
+	public function cancel_order($cart_id){
+		$data['is_canceled'] = 1;
+		$this->db->where('cart_id' ,$cart_id);
+		$this->db->update('cart',$data);
+	}
 	public function insert_cart_item($data){
 		//Check if Item already exists in cart
 		$this->db->where('item_code' ,$data['item_code']);
+		$this->db->where('cart_id' ,$data['cart_id']);
 		$query = $this->db->get('cart_detail');
 		$result = $query->row();
 		if($query->num_rows() > 0){
@@ -34,6 +40,7 @@ class Cart extends CI_Model {
 	}
 	public function get_orders($username){
 		$this->db->where('cart_user' ,$username);
+		$this->db->where('is_cart_checkout' ,1);
 		$query = $this->db->get('cart');
 		$carts = $query->result();
 
@@ -66,6 +73,16 @@ class Cart extends CI_Model {
 			return $result->cart_id;
 		}else{
 			return 0;
+		}
+
+	}
+	public function clear_user_cart($username){
+		$this->db->where('cart_user' ,$username);
+		$this->db->where('is_cart_checkout' , 0);
+		$query = $this->db->get('cart');
+		if($query->row() && isset($query->row()->cart_id)){
+			$result = $query->row();
+			$this->db->delete('cart_detail', array('cart_id' => $query->row()->cart_id));
 		}
 
 	}

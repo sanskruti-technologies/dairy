@@ -13,6 +13,7 @@ class Customer extends CI_Model {
       }
     }
     $query = $this->db->get('customers');
+  //  echo $this->db->last_query();
 		$result = $query->result_array();
     return $result;
   }

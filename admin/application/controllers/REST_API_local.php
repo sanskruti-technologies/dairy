@@ -32,7 +32,7 @@ class REST_API_local extends CI_Controller {
 	public function order_book($order_book_name){
 		$username =  $_POST['username'];
 		$password =  $_POST['password'];
-		
+
 		$erpnext = new FrappeClient();
 		$result = $erpnext->get("Order Book",$order_book_name);
 		$order_book = $result->body->data;
@@ -41,9 +41,9 @@ class REST_API_local extends CI_Controller {
 	public function get_all_order_books(){
 		$username =  $_POST['username'];
 		$password =  $_POST['password'];
-		
+
 		$erpnext = new FrappeClient();
-		
+
 		$result = $erpnext->search("Order Book",array(),array("name","docstatus"));
 		$order_book = $result->body->data;
 		return json_encode($order_book);
@@ -51,7 +51,7 @@ class REST_API_local extends CI_Controller {
 	public function get(){
 		$search = NULL;
 		$name = NULL;
-		
+
 		 $doctype=$_GET['doctype'];
 		 if(isset($_GET['search'])){
 			 $search=json_decode($_GET['search']);
@@ -68,8 +68,8 @@ class REST_API_local extends CI_Controller {
 		        echo $this->items($search);
 		        break;
 				case 'Customer':
-				        echo $this->customers($search);
-				        break;
+		        echo $this->customers($search);
+		        break;
 				case 'Cart':
 					echo $this->cart();
 					break;
@@ -90,7 +90,7 @@ class REST_API_local extends CI_Controller {
 					break;
 	    }
 	}
-	
+
 	public function add(){
 		$doctype=$_GET['doctype'];
 		$cart_array = $_POST;
@@ -100,12 +100,21 @@ class REST_API_local extends CI_Controller {
 					 break;
 		 }
 	}
+
 	public function update(){
 		$doctype=$_GET['doctype'];
+		$cart_id = NULL;
+		if(isset($_GET['cart_id'])){
+			$cart_id = $_GET['cart_id'];
+		}
+
 		$cart_array = $_POST;
 		switch ($doctype) {
 			 case 'Cart':
 			 echo $this->update_cart($cart_array);
+			 break;
+			 case 'Cancel Cart':
+			 echo $this->cancel_order($cart_id);
 			 break;
 		 }
 	}
@@ -122,7 +131,6 @@ class REST_API_local extends CI_Controller {
 		$password =  $cart_array['password'];
 		//Login using the username and password
 		$erpnext = new FrappeClient($username,$password);
-
 		//Create Cart if not already exists
 		$cart_id = $this->cart->get_open_cart($username);
 		if($cart_id == 0){
@@ -201,7 +209,11 @@ class REST_API_local extends CI_Controller {
 		}
 
 	}
-	public function create_field_order($cart){
+	public function cancel_order($cart_id){
+		 $this->cart->cancel_order($cart_id);
+		 return json_encode(array('status'=>'success'));
+	}
+	public function create_field_order($cart,$username,$password){
 		$erpnext = new FrappeClient();
 		$data = array();
 		$data['customer'] = $cart->customer;
@@ -240,17 +252,15 @@ class REST_API_local extends CI_Controller {
 		$order_book_data['from_date'] = $cart->order_date;
 		//$order_book_data['submit_on_creation'] = 1;
 		$order_book_data['docstatus'] = 1;
-		$result = $erpnext->insert("Order Book",$order_book_data);
-		//print_r($result);
-		$order_book_name = $result->body->data->name;
-		$order_book = array('order_book_name' => $order_book_name,
-	                       'field_orders' => $field_orders);
+		//$result = $erpnext->insert("Order Book",$order_book_data);
+		//$order_book_name = $result->body->data->name;*/
+	  $order_book = array('field_orders' => $field_orders);
 		echo json_encode($order_book);
 	}
 	public function check_auth(){
 		if(isset($_POST['username']) && isset($_POST['password'])){
 			$username = $_POST['username'];
-			$password = $_POST['password'];	
+			$password = $_POST['password'];
 			try{
 				$erpnext = new FrappeClient($username,$password);
 				return TRUE;
@@ -260,7 +270,7 @@ class REST_API_local extends CI_Controller {
 		}else{
 			return FALSE;
 		}
-		
+
 		try{
 			$erpnext = new FrappeClient($username,$password);
 			echo $erpnext->body->full_name;
@@ -293,7 +303,7 @@ class REST_API_local extends CI_Controller {
 			$cart_detail =  $this->cart->get_cart_detail($cart_id);
 			$cart->items = $cart_detail;
 
-			$this->create_field_order($cart);
+			$this->create_field_order($cart,$username,$password);
 			$this->cart->checkout_cart($cart_id);
 		}else{
 			echo "Cart is Empty";

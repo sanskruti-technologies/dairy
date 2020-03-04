@@ -141,11 +141,25 @@ CREATE TABLE `item_tax_template_detail` (
 -- Table structure for table `users`
 --
 
+
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
-  `username` varchar(50) NOT NULL,
+  `username` varchar(50) DEFAULT NULL,
   `first_name` varchar(50) NOT NULL,
-  `middle_name` varchar(50) NOT NULL
+  `middle_name` varchar(50) DEFAULT NULL,
+  `name` varchar(50) NOT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `mobile_no` varchar(20) DEFAULT NULL,
+  `doctype_name` varchar(50) NOT NULL,
+  `user_type` varchar(50) DEFAULT NULL,
+  `adress_name` varchar(50) NOT NULL,
+  `address_type` varchar(50) NOT NULL,
+  `address_line1` varchar(50) NOT NULL,
+  `address_line2` varchar(50) NOT NULL,
+  `city` varchar(20) NOT NULL,
+  `country` varchar(50) NOT NULL,
+  `address` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -163,6 +177,11 @@ ALTER TABLE `cart`
 --
 ALTER TABLE `cart_detail`
   ADD PRIMARY KEY (`cart_detail_id`);
+
+INSERT INTO `users` (`user_id`, `username`, `first_name`, `middle_name`, `name`, `email`, `last_name`, `mobile_no`, `doctype_name`, `user_type`, `adress_name`, `address_type`, `address_line1`, `address_line2`, `city`, `country`, `address`) VALUES
+(1, 'dharadshah', 'Dhara', NULL, 'dharadshah@gmail.com', 'dharadshah@gmail.com', 'Shah', NULL, 'HR-EMP-00047', 'Employee', '', '', '', '', '', '', 'Address Line 1,\nAddress Line 2,\nSurat'),
+(2, 'gajendra', 'Gajendra', NULL, 'gajendranishad1432@gmail.com', 'gajendranishad1432@gmail.com', 'Nishad', NULL, 'GAIA', 'Employee', 'Gajendra - Billing', 'Office', 'Address Line 1', 'Address Line 2', 'Surat', 'India', NULL),
+(3, 'distributer', 'Distributer', NULL, 'test@smb.com', NULL, 'Test', NULL, 'test SMB', 'Customer', '', '', '', '', '', '', NULL);
 
 --
 -- Indexes for table `customers`
