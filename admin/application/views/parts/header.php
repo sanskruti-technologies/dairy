@@ -37,6 +37,8 @@
 
     <!-- Page level custom scripts -->
     <script src="<?=base_url();?>assets/js/demo/datatables-demo.js"></script>
+		<script src="<?php echo base_url(); ?>assets/js/validation.js" type="text/javascript"></script>
+
 </head>
 <body id="page-top">
 
@@ -55,7 +57,21 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item">
+	   <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+         
+		   <i class="fas fa-fw fa-list "></i>
+          <span>Items</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">All Items:</h6>
+            <a class="collapse-item" href="<?=site_url('items/item_groups');?>">Item Groups</a>
+            <a class="collapse-item" href="<?=site_url('items/index');?>">Items</a>
+          </div>
+        </div>
+      </li>
+     <!-- <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="<?=site_url('items');?>">
           <i class="fas fa-fw fa-list "></i>
           <span>Items</span></a>
@@ -66,13 +82,12 @@
                 <a class="collapse-item" href="cards.html">Cards</a>
               </div>
           </div>
-      </li>
+      </li>-->
       <li class="nav-item">
         <a class="nav-link" href="<?=site_url('customers');?>">
           <i class="fas fa-fw  fa-users "></i>
           <span>Customers</span>
         </a>
-
       </li>
 
 
@@ -111,7 +126,7 @@
                     </a>
                     <!-- Dropdown - User Information -->
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                      <a class="dropdown-item" href="#">
+                      <a class="dropdown-item" href="<?=site_url('editProfile');?>">
                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                         Profile
                       </a>

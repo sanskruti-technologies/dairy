@@ -63,9 +63,9 @@
                     <div class="form-group">
                       <input type="text" class="form-control form-control-user" id="userName" name="userName" required aria-describedby="emailHelp" placeholder="UserName">
                     </div>
-                    <!--<div class="form-group">
+                    <div class="form-group">
                       <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
-                    </div>-->
+                    </div>
 <!--                    <button class="btn btn-primary btn-user btn-block">Login</button>-->
                         <button type="submit" class="btn btn-primary btn-user btn-block"><i class="icon-ok"></i> Login</button>
 					</form>

@@ -2,6 +2,7 @@
 class Customer extends CI_Model {
   public function __construct() {
       $this->load->database();
+
   }
   public function insert_customer($data){
 		$this->db->insert('customers',$data);
